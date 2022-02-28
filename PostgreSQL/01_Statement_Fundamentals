@@ -1,0 +1,164 @@
+# SELECT
+
+SELECT * FROM actor;
+
+# SELECT DISTINCT --- for unique values.
+
+SELECT DISTINCT release_year FROM  film;
+
+# COUNT() --- the number of rows. MUST have paranthesis.
+
+	# SELECT COUNT(DISTINCT name) FROM table --- for number of unique values. MUST have paranthesis.
+	
+SELECT COUNT(amount) FROM payment;
+SELECT COUNT(DISTINCT amount) FROM payment;
+
+# WHERE --- allows us to specify conditions on columns for the rows to be returned.
+# Comparison Operators: =, >, <, >=, <=, <> or !=.
+# Logical Operators: AND, OR, NOT
+
+SELECT * FROM  customer
+WHERE first_name = 'Jared'
+
+SELECT title FROM film
+WHERE rental_rate > 4 AND replacement_cost >= 19.99 AND rating = 'R'
+
+SELECT COUNT(title) FROM film
+WHERE rental_rate > 4 AND replacement_cost >= 19.99 AND rating = 'R'
+
+SELECT COUNT(*) FROM film
+WHERE rating != 'R' OR rating = 'PG-13'
+
+# ORDER BY --- to sort rows based on a column, default:ascending-ASC or descending-DESC. End of the query.
+
+SELECT * FROM customer
+ORDER BY first_name DESC
+
+SELECT store_id, first_name, last_name FROM customer
+ORDER BY store_id DESC,first_name ASC
+
+SELECT first_name, last_name FROM customer
+ORDER BY store_id DESC,first_name ASC --- Still works.
+
+# LIMIT --- to limit the number of rows returned. Very end of a query.
+
+SELECT * FROM payment
+WHERE amount != 0
+ORDER BY payment_date DESC
+LIMIT 10
+
+--- To see general layout of table.
+
+SELECT * FROM payment
+LIMIT 1
+
+# BETWEEN value >= low AND value <= high. 
+# NOT BETWEEN value < low OR value > high.
+# Can be used with dates. Date format MUST be in the ISO 8601 'YYYY-MM-DD' string format. Day starts at 00:00.
+
+SELECT * FROM payment
+WHERE amount BETWEEN 8 AND 9
+
+SELECT* FROM payment
+WHERE payment_date BETWEEN '2007-02-01' AND '2007-02-14' --- Nothing will show up after 2007-02-14 00:00:00
+
+# IN --- operator to create a condition that checks to see if a value in included in a list.MUST be in paranthesis()
+# NOT IN --- excludes the values
+
+SELECT DISTINCT(amount) FROM payment
+ORDER BY amount
+
+SELECT * FROM payment
+WHERE amount IN (0.99,1.98,1.99)
+ORDER BY amount
+
+SELECT COUNT(*) FROM payment
+WHERE amount NOT IN (0.99,1.98,1.99)
+
+SELECT * FROM customer
+WHERE first_name IN ('John', 'Jake','Julie')
+
+# LIKE --- to perform pattern matching against string data. Case sensitive.
+# ILIKE --- case-insensitive
+	# % : matches any sequence of characters
+	# _ : matches any single character. Replace just a single character or more.
+	- All names that begin with an A: WHERE name LIKE 'A%'
+	- All names that end with an 'a': WHERE name LIKE '%a'
+	- WHERE title LIKE 'Mission Impossible _'
+	- WHERE name LIKE '_her%' --- Cheryl, Theresa, Sherri
+	
+SELECT * FROM customer
+WHERE first_name LIKE 'J%' and last_name LIKE 'S%'
+
+SELECT * FROM customer
+WHERE first_name LIKE 'j%' and last_name LIKE 's%' --- Gets nothing
+
+SELECT * FROM customer
+WHERE first_name ILIKE 'j%' and last_name ILIKE 's%' --- case-insensitive
+
+SELECT * FROM customer
+WHERE first_name LIKE '%er%' --- who has 'er' in first_name
+
+SELECT * FROM customer
+WHERE first_name LIKE '%er' --- ends with 'er'
+
+SELECT * FROM customer
+WHERE first_name LIKE '___er' --- who has five character and ends with 'er'
+
+SELECT * FROM customer
+WHERE first_name LIKE 'A%' AND last_name NOT LIKE 'B%'
+ORDER  BY last_name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
