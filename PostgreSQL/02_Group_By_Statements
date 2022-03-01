@@ -1,0 +1,72 @@
+# Aggregate Functions call happen only in SELECT or HAVING clause.
+	- AVG() --- returns a floating point
+		- ROUND(AVG(),n)
+	- COUNT()
+	- MAX()
+	- MIN()
+	- SUM()
+
+SELECT MIN(replacement_cost) FROM film
+
+SELECT MAX(replacement_cost), MIN(replacement_cost) FROM film
+
+SELECT COUNT(film_id) FROM film
+
+SELECT AVG(replacement_cost) FROM film
+
+SELECT ROUND(AVG(replacement_cost), 2) FROM film
+
+SELECT SUM(replacement_cost) FROM film
+
+# GROUP BY --- have to choose categorical column. Must be right after FROM or WHERE
+# SELECT cat_col, AGG() FROM table
+  WHERE  cat_col != 'A'
+  GROUP BY cat_col
+# In the SELECT statement, columns must either have an AGG function or be in GROUP BY call.
+# SELECT company, SUM(sales) FROM finance_table
+  GROUP BY company
+  ORDER BY SUM(sales) --- reference the entire function
+
+SELECT customer_id, SUM(amount) FROM payment
+GROUP BY customer_id
+ORDER BY SUM(amount) DESC
+
+SELECT customer_id, COUNT(amount) FROM payment
+GROUP BY customer_id
+ORDER BY COUNT(amount) DESC
+
+SELECT customer_id, staff_id, SUM(amount) FROM payment
+GROUP BY staff_id, customer_id
+ORDER BY customer_id, staff_id
+
+SELECT staff_id, customer_id, SUM(amount) FROM payment
+GROUP BY staff_id, customer_id
+ORDER BY SUM(amount)
+
+SELECT DATE(payment_date), SUM(amount) FROM payment --- extract date
+GROUP BY DATE(payment_date)
+ORDER BY SUM(amount) DESC
+
+# HAVING --- to filter after an aggregation has already taken place.
+# SELECT company, SUM(sales)
+  FROM finance_table
+  WHERE company != 'Google'
+  GROUP BY company
+  HAVING SUM(sales)>1000
+  
+SELECT customer_id, SUM(amount) FROM payment
+WHERE customer_id NOT IN (184,87,477)
+GROUP BY customer_id
+  
+SELECT customer_id, SUM(amount) FROM payment
+GROUP BY customer_id
+HAVING SUM(amount) > 100
+  
+SELECT store_id, COUNT(customer_id) FROM customer
+GROUP BY store_id
+HAVING COUNT(*) > 300
+
+
+
+
+
