@@ -1,0 +1,110 @@
+--- TIMESTAMPS ---
+
+SHOW ALL
+
+SHOW TIMEZONE
+
+SELECT NOW() --- timestamp with time zone
+
+SELECT TIMEOFDAY() --- timestamp in string
+
+SELECT CURRENT_TIME --- time with time zone
+
+SELECT CURRENT_DATE --- date
+
+# EXTRACT()
+	- YEAR
+	- MONTH
+	- DAY
+	- WEEK
+	- QUARTER
+# EXTRACT(YEAR FROM date_col)
+# AGE() --- Calculates and returns the current age given a timestamp
+	- AGE(date_col)
+	
+# TO_CHAR()	--- convert data types to text
+	- TO_CHAR(date_col, 'mm-dd-yyyy')
+
+SELECT EXTRACT(YEAR FROM payment_date) AS year FROM payment
+	
+SELECT EXTRACT(QUARTER FROM payment_date) FROM payment
+	
+SELECT AGE(payment_date) FROM payment
+
+SELECT TO_CHAR(payment_date, 'MM') FROM payment
+SELECT TO_CHAR(payment_date, 'MONTH-YYYY') FROM payment
+SELECT TO_CHAR(payment_date, 'MONTH   YYYY') FROM payment
+SELECT TO_CHAR(payment_date, 'mon/dd/YYYY') FROM payment
+SELECT TO_CHAR(payment_date, 'DD/MM/YYYY') FROM payment
+
+--- MATHEMATICAL FUNCTIONS --- (Documentation)
+
+SELECT ROUND(rental_rate/replacement_cost,2)*100 AS percent_cost FROM film
+
+SELECT 0.1 * replacement_cost AS deposit FROM film
+
+--- STRING FUNCTIONS --- (Documentation)
+
+SELECT LENGTH(first_name) FROM customer --- length
+
+# concatenate
+SELECT first_name || last_name FROM customer --- no space
+SELECT first_name || ' ' || last_name AS full_name FROM customer --- there is space now
+SELECT first_name || ' ' || upper(last_name) AS full_name FROM customer --- there is space now
+
+SELECT first_name || last_name || '@gmail.com' FROM customer
+SELECT LOWER(LEFT(first_name,1)) || LOWER(last_name) || '@gmail.com' AS custom_email FROM customer
+
+--- SUBQUERY ---
+
+# Perform first paranthesis
+# SELECT student,grade FROM test_score
+  WHERE student IN(SELECT student FROM honor_roll_table)
+  
+# EXISTS()
+
+SELECT title,rental_rate FROM film
+WHERE rental_rate > 
+(SELECT AVG(rental_rate) FROM film)
+
+SELECT film_id,title FROM film
+WHERE film_id IN
+(SELECT inventory.film_id FROM rental
+JOIN inventory 
+ON inventory.inventory_id = rental.inventory_id
+WHERE return_date BETWEEN '2005-05-29' AND '2005-05-30')
+ORDER BY film_id
+
+SELECT first_name,last_name FROM customer AS c
+WHERE EXISTS
+(SELECT * FROM payment as p
+WHERE p.customer_id = c.customer_id
+AND amount > 11)
+ORDER BY first_name
+	
+--- SELF-JOIN ---
+
+# Query in which a table is joined to itself. Comparing values.
+# Necessary to use an alias for the table.
+# SELECT emp.col, report.col FROM employees AS emp
+  JOIN employees AS report 
+  ON emp.emp_id = report.report_id 
+  
+SELECT f1.title,f2.title,f1.length FROM film AS f1
+JOIN film AS f2
+ON f1.film_id != f2.film_id
+AND f1.length = f2.length
+WHERE length = 117
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
