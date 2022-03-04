@@ -1,0 +1,28 @@
+-- VIEW --
+
+-- A view is a database object that is of a stored query
+-- You can also update and alter existing views.
+
+--Create a view
+CREATE VIEW customer_info AS
+SELECT first_name, last_name, address FROM customer
+INNER JOIN address
+ON customer.address_id = address.address_id
+
+SELECT * FROM customer_info
+
+--Alter existing view
+CREATE OR REPLACE VIEW customer_info AS
+SELECT first_name, last_name, address, district FROM customer -- added district
+INNER JOIN address
+ON customer.address_id = address.address_id
+
+SELECT * FROM customer_info
+
+--Delete the view
+DROP VIEW IF EXISTS customer_info
+
+--Alter name of the view
+ALTER VIEW customer_info RENAME to c_info
+
+SELECT * FROM c_info
