@@ -1,0 +1,108 @@
+--- CASE ---
+SELECT a,
+CASE 
+	WHEN a=1(condition1) THEN 'one'(result1) -- We can change conditions
+	WHEN a=2(condition2) THEN 'two'result2
+	ELSE 'other'(come_other_result) AS label -- relabel return column
+END
+FROM test;
+
+-- CASE Expression Syntax
+
+SELECT  a,
+	CASE a WHEN 1 THEN 'one' -- when a equals to 1
+		WHEN 2 THEN 'two'
+		ELSE 'other'
+	END
+FROM test;
+
+-- EXAMPLE
+
+--premium customers between 0-100 customer_id
+--plus customers between 100-200 customer_id
+--the others normal
+
+SELECT customer_id,
+CASE 
+	WHEN (customer_id <= 100) THEN 'Premium'
+	WHEN (customer_id BETWEEN 100 and 200) THEN 'Plus'
+	ELSE 'normal'
+END AS customer_class
+FROM customer
+
+--case expression
+
+SELECT customer_id,
+CASE customer_id
+	WHEN 2 THEN 'Winner'
+	WHEN 5 THEN 'Second Place'
+	ELSE 'Normal'
+END AS raffle_results
+FROM customer
+
+--film table
+
+SELECT 
+SUM(CASE rental_rate
+	WHEN 0.99 THEN 1
+	ELSE 0
+END) AS bargains,
+SUM(CASE rental_rate
+   	WHEN 2.99 THEN 1
+   ELSE 0
+END) AS regular,
+SUM(CASE rental_rate
+   	WHEN 4.99 THEN 1
+   ELSE 0
+END) AS premium
+FROM film
+
+-- COALESCE --
+
+--Accepts an unlimited number of arguments. It returns the first argument that is  not null. If all arguments are null, function will return null.
+--In case a table with null values that we want to perform operations, we can use COALESCE.
+
+SELECT COALESCE(1,2) -- returns 1
+
+SELECT COALESCE(NULL,2,3) -- returns 2
+
+SELECT item, (price - COALESCE(discount,0)) AS final FROM table -- Calculate price - discount. But if there is a null value in discount take it as 0.
+
+-- CAST --
+
+-- Convert from one data type into another.(reasonable data)
+-- '5' to an integer is OK but 'five' to an integer NOT OK.
+
+--Syntax for CAST 
+SELECT CAST ('5' AS INTEGER) AS new_int
+
+--PostgreSQL CAST operator
+SELECT '5'::INTEGER
+
+SELECT CAST(date AS TIMESTAMP) FROM table
+
+-- Count the length of inventory_id
+SELECT CAST(inventory_id AS VARCHAR) FROM  rental
+
+SELECT CHAR_LENGTH(CAST(inventory_id AS VARCHAR)) FROM  rental
+
+-- NULLIF --
+
+-- Takes in 2 inputs and return NULL if both are equal, not the first argument
+NULLIF(10,10) -- returns NULL
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
