@@ -1,0 +1,205 @@
+--- CREATE ---
+
+CREATE TABLE account(
+	user_id SERIAL PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	created_on TIMESTAMP NOT NULL,
+	last_login TIMESTAMP
+)
+
+CREATE TABLE job(
+	job_id SERIAL PRIMARY KEY,
+	job_name VARCHAR(200) UNIQUE NOT NULL
+)
+
+CREATE TABLE account_job(
+	user_id INTEGER REFERENCES account(user_id),
+	job_id INTEGER REFERENCES job(job_id),
+	hire_date TIMESTAMP
+)
+
+--- INSERT ---
+
+SELECT * FROM account
+
+INSERT INTO account(username, password, email, created_on)
+VALUES ('Ahmet', 'password', 'ahmetumitcaliskan@gmail.com', CURRENT_TIMESTAMP)
+
+INSERT INTO job(job_name)
+VALUES ('Data Scientist')
+INSERT INTO job(job_name)
+VALUES ('Manager')
+
+SELECT * FROM job
+
+INSERT INTO account_job(user_id, job_id, hire_date)
+VALUES (1, 1, CURRENT_TIMESTAMP)
+
+SELECT * FROM account_job
+
+--- UPDATE ---
+
+SELECT * FROM account
+
+UPDATE account
+SET last_login = CURRENT_TIMESTAMP
+
+UPDATE account
+SET last_login = created_on
+
+-- update join --
+
+SELECT * FROM account_job
+
+UPDATE account_job
+SET hire_date = account.created_on FROM account
+WHERE account_job.user_id = account.user_id
+
+SELECT * FROM account
+
+-- returning --
+
+UPDATE account
+SET last_login = CURRENT_TIMESTAMP
+RETURNING email, created_on, last_login
+
+--- DELETE ---
+
+-- Delete rows based on their presence in other tables
+DELETE FROM tableA
+USING tableB
+WHERE tableA.id = TableB.id
+
+-- Delete all rows
+DELETE FROM table
+
+SELECT * FROM job
+
+INSERT INTO job(job_name)
+VALUES ('Cowboy')
+
+DELETE FROM job
+WHERE job_name = 'Cowboy'
+RETURNING job_id,job_name
+
+--- ALTER ---
+
+-- Adding column
+ALTER TABLE table_name
+ADD COLUMN new_col TYPE 
+
+-- Dropping column
+ALTER TABLE table_name
+DROP COLUMN col_name
+
+-- Alter constraints
+ALTER TABLE table_name
+ALTER COLUMN col_name
+SET DEFAULT value / DROP DEFAULT value / SET NOT NULL / DROP NUT NULL
+ADD CONSTRAINT constraint_name 
+
+CREATE TABLE information(
+	info_id SERIAL PRIMARY KEY,
+	title VARCHAR(500) NOT NULL,
+	person VARCHAR(50) NOT NULL
+)
+
+SELECT * FROM information
+
+ALTER TABLE information
+RENAME TO new_info
+
+SELECT * FROM new_info
+
+ALTER TABLE new_info
+RENAME COLUMN person TO people
+
+INSERT INTO new_info(title)
+VALUES ('some new title') -- ERROR:  null value in column "people" of relation "new_info" violates not-null constraint
+
+ALTER TABLE new_info
+ALTER COLUMN people DROP NOT NULL
+
+INSERT INTO new_info(title)
+VALUES ('some new title')
+
+--- DROP ---
+
+ALTER  TABLE table_name 
+DROP COLUMN col_name
+
+-- Remoce all dependencies
+ALTER  TABLE table_name 
+DROP COLUMN col_name CASCADE
+
+-- Chech for existence to avoid error
+ALTER TABLE table_name
+DROP COLUMN IF EXISTS col_name
+
+SELECT * FROM new_info
+
+ALTER TABLE new_info
+DROP COLUMN people
+
+ALTER TABLE new_info
+DROP COLUMN IF EXISTS people -- NOTICE:  column "people" of relation "new_info" does not exist, skipping ALTER TABLE
+
+--- CHECK ---
+
+CREATE TABLE employees(
+	emp_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	birthdate DATE CHECK (birthdate > '1960-01-01'),
+	hire_date DATE CHECK (hire_date > birthdate),
+	salary INTEGER CHECK (salary > 0)
+)
+
+INSERT INTO employees(
+	first_name,
+	last_name,
+	birthdate,
+	hire_date,
+	salary
+)
+VALUES (
+	'Ahmet',
+	'Caliskan',
+	'1890-06-22', -- ERROR:  new row for relation "employees" violates check constraint "employees_birthdate_check"
+	'2020-03-03',
+	1000
+)
+
+INSERT INTO employees(
+	first_name,
+	last_name,
+	birthdate,
+	hire_date,
+	salary
+)
+VALUES (
+	'Ahmet',
+	'Caliskan',
+	'1990-06-22',
+	'2020-03-03',
+	1000
+)
+
+SELECT * FROM employees
+
+INSERT INTO employees(first_name, last_name, birthdate, hire_date, salary)
+VALUES ('Umit', 'Caliskan', '1980-02-06', '2022-03-03', 2000)
+
+
+
+
+
+
+
+
+
+
+
+
