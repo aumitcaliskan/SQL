@@ -1,0 +1,43 @@
+-- IMPORT --
+--First need to create a table which consists the same columns in csv file.
+--After creating table hit right click on the table and choose Import/Export
+--Import --> Columns(choose columns to import) --> Filename --> Header --> Delimiter --> OK
+--Export --> Columns(choose columns to export) --> Filename --> Delimiter --> OK
+
+CREATE TABLE car_app(
+Brand VARCHAR(100),
+Model VARCHAR(100),
+Body_Type VARCHAR(100),
+First_Registration INTEGER,
+Countries VARCHAR(100),
+Fuel_type VARCHAR(100),
+Km INTEGER,
+Power INTEGER,
+Gearing_Type VARCHAR(100),
+Gears INTEGER,
+Nr_of_Doors INTEGER,
+Nr_of_Seats INTEGER,
+Previous_Owners INTEGER,
+Vehicle_Condition VARCHAR(100),
+Drive_Chain VARCHAR(100),
+Displacement INTEGER,
+Cylinders INTEGER,
+Weight INTEGER,
+Body_Color VARCHAR(100),
+Interior_Color VARCHAR(100),
+Upholstery VARCHAR(100),
+Euro_Emission_Class VARCHAR(100),
+CO2_Emission INTEGER,
+Consumption_Comb FLOAT,
+Consumption_City FLOAT,
+Consumption_Country FLOAT,
+Price INTEGER
+)
+
+SELECT * FROM car_app
+
+
+
+
+
+
